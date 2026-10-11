@@ -1,0 +1,8 @@
+.body { font-size: var(--text-body); font-weight: 400; line-height: var(--line-body); }
+.strong { font-size: var(--text-body); font-weight: var(--weight-strong); line-height: var(--line-body); }
+.small { font-size: var(--text-small); font-weight: 400; line-height: var(--line-body); }
+.caption { font-size: var(--text-caption); font-weight: var(--weight-caption); line-height: var(--line-body); }
+.micro { font-size: var(--text-micro); font-weight: var(--weight-strong); line-height: var(--line-body); }
+.expression { font-size: var(--text-h2); font-weight: var(--weight-heading); line-height: var(--line-heading); }
+.meaning { font-size: var(--text-body); font-weight: 400; color: var(--text-secondary); line-height: var(--line-body); }
+.pronunciation { font-size: var(--text-small); font-weight: 400; color: var(--text-muted); line-height: var(--line-body); }

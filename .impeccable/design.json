@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-11T12:00:28.013Z",
+  "title": "Design System: sayidwithenglish",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "background"
+      },
+      "background-subtle": {
+        "role": "neutral",
+        "displayName": "background-subtle"
+      },
+      "surface-1": {
+        "role": "neutral",
+        "displayName": "surface-1"
+      },
+      "surface-2": {
+        "role": "neutral",
+        "displayName": "surface-2"
+      },
+      "surface-3": {
+        "role": "neutral",
+        "displayName": "surface-3"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "border"
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "border-strong"
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "text-primary"
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "text-secondary"
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "text-muted"
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "primary"
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "primary-hover"
+      },
+      "violet": {
+        "role": "secondary",
+        "displayName": "violet"
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "success"
+      },
+      "warning": {
+        "role": "semantic",
+        "displayName": "warning"
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "danger"
+      },
+      "info": {
+        "role": "semantic",
+        "displayName": "info"
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "on-accent"
+      },
+      "primary-soft": {
+        "role": "primary",
+        "displayName": "primary-soft"
+      },
+      "violet-soft": {
+        "role": "secondary",
+        "displayName": "violet-soft"
+      },
+      "success-soft": {
+        "role": "semantic",
+        "displayName": "success-soft"
+      },
+      "warning-soft": {
+        "role": "semantic",
+        "displayName": "warning-soft"
+      },
+      "danger-soft": {
+        "role": "semantic",
+        "displayName": "danger-soft"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Kaynak ölçek tokenı; boş sayfalarda kullanılmaz."
+      },
+      "headline": {
+        "displayName": "H1",
+        "purpose": "Sayfa başlığı."
+      },
+      "title": {
+        "displayName": "H2",
+        "purpose": "Boş durum başlığı."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Açıklama metni."
+      }
+    },
+    "shadows": [
+      {
+        "name": "card",
+        "value": "0 1px 2px rgb(0 0 0 / 20%), 0 8px 24px rgb(0 0 0 / 12%)",
+        "purpose": "Card ve Tooltip."
+      },
+      {
+        "name": "overlay",
+        "value": "0 24px 80px rgb(0 0 0 / 45%)",
+        "purpose": "Dropdown ve Dialog."
+      },
+      {
+        "name": "focus-ring",
+        "value": "0 0 0 3px rgb(79 124 255 / 12%)",
+        "purpose": "Input focus."
+      }
+    ],
+    "motion": [
+      {
+        "name": "duration",
+        "value": "150ms",
+        "purpose": "Hover ve switch thumb geçişleri."
+      },
+      {
+        "name": "easing",
+        "value": "cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "Ortak easing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "640px"
+      },
+      {
+        "name": "desktop",
+        "value": "1024px"
+      },
+      {
+        "name": "large",
+        "value": "1440px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Mevcut Button primary varyantı; önizleme etiketi işlevsel ürün aksiyonu değildir.",
+      "html": "<button class=\"ds-button-primary\">İlk kaydını ekle</button>",
+      "css": ".ds-button-primary{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--button-default);padding:0 var(--space-3);border:1px solid transparent;border-radius:var(--radius-button);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-body);font-weight:var(--weight-strong);transition:background-color var(--motion-duration) var(--motion-easing),border-color var(--motion-duration) var(--motion-easing);cursor:pointer;background:var(--primary);color:var(--on-accent);} .ds-button-primary:hover{background:var(--primary-hover);} .ds-button-primary:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; } .ds-button-primary:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}"
+    },
+    {
+      "name": "secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Mevcut Button secondary varyantı; önizleme etiketi işlevsel ürün aksiyonu değildir.",
+      "html": "<button class=\"ds-button-secondary\">İptal</button>",
+      "css": ".ds-button-secondary{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--button-default);padding:0 var(--space-3);border:1px solid transparent;border-radius:var(--radius-button);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-body);font-weight:var(--weight-strong);transition:background-color var(--motion-duration) var(--motion-easing),border-color var(--motion-duration) var(--motion-easing);cursor:pointer;background:var(--surface-1);border-color:var(--border-strong);color:var(--text-primary);} .ds-button-secondary:hover{background:var(--surface-2);} .ds-button-secondary:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; } .ds-button-secondary:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}"
+    },
+    {
+      "name": "ghost button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Mevcut Button ghost varyantı; önizleme etiketi işlevsel ürün aksiyonu değildir.",
+      "html": "<button class=\"ds-button-ghost\">Kapat</button>",
+      "css": ".ds-button-ghost{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--button-default);padding:0 var(--space-3);border:1px solid transparent;border-radius:var(--radius-button);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-body);font-weight:var(--weight-strong);transition:background-color var(--motion-duration) var(--motion-easing),border-color var(--motion-duration) var(--motion-easing);cursor:pointer;background:transparent;color:var(--text-secondary);} .ds-button-ghost:hover{color:var(--text-primary);background:var(--surface-2);} .ds-button-ghost:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; } .ds-button-ghost:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}"
+    },
+    {
+      "name": "destructive button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Mevcut Button destructive varyantı; önizleme etiketi işlevsel ürün aksiyonu değildir.",
+      "html": "<button class=\"ds-button-destructive\">Sil</button>",
+      "css": ".ds-button-destructive{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);height:var(--button-default);padding:0 var(--space-3);border:1px solid transparent;border-radius:var(--radius-button);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-body);font-weight:var(--weight-strong);transition:background-color var(--motion-duration) var(--motion-easing),border-color var(--motion-duration) var(--motion-easing);cursor:pointer;background:var(--danger-soft);color:var(--danger);border-color:var(--danger);} .ds-button-destructive:hover{background:var(--danger);color:var(--on-accent);} .ds-button-destructive:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; } .ds-button-destructive:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Etiketli metin alanı; hover, focus ve error durumu.",
+      "html": "<label for=\"ds-input\" class=\"ds-field-label\">Sayfa ara</label><input id=\"ds-input\" class=\"ds-input\" placeholder=\"Ne arıyorsun?\">",
+      "css": ".ds-field-label{display:block;margin-bottom:var(--space-2);color:var(--text-secondary);font:var(--text-body) var(--font-inter),Arial,sans-serif}.ds-input{display:block;width:100%;height:var(--input-height);padding:0 var(--space-3);background:var(--surface-1);color:var(--text-primary);border:1px solid var(--border);border-radius:var(--radius-input);font:var(--text-body) var(--font-inter),Arial,sans-serif;transition:border-color var(--motion-duration) var(--motion-easing)}.ds-input::placeholder{color:var(--text-secondary)}.ds-input:hover{border-color:var(--border-strong)}.ds-input:focus{border-color:var(--primary);box-shadow:var(--focus-ring)}.ds-input:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; }.ds-input[aria-invalid=\"true\"]{border-color:var(--danger)}.ds-input:disabled{opacity:.45;cursor:not-allowed}"
+    },
+    {
+      "name": "Blue badge",
+      "kind": "chip",
+      "refersTo": "badge-blue",
+      "description": "Mevcut mavi Badge varyantı.",
+      "html": "<span class=\"ds-badge\">Yeni</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-2);border:1px solid var(--border);border-radius:var(--radius-badge);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-caption);font-weight:var(--weight-caption);background:var(--primary-soft);color:var(--primary-hover)}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "CardHeader ve CardContent birlikte.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">Çalışma alanı</div><div class=\"ds-card-content\">Henüz hiçbir kayıt yok.</div></div>",
+      "css": ".ds-card{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface-1);box-shadow:var(--shadow-card);color:var(--text-primary);font:var(--text-body) var(--font-inter),Arial,sans-serif}.ds-card-header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-5)}.ds-card-content{padding:var(--space-5);color:var(--text-secondary)}.ds-card-header+.ds-card-content{padding-top:0}"
+    },
+    {
+      "name": "Navigation item",
+      "kind": "nav",
+      "refersTo": "navigation-active",
+      "description": "Aktif route stili; önizleme bağlantısı yerel örnektir.",
+      "html": "<nav aria-label=\"Önizleme navigasyonu\"><a class=\"ds-nav\" href=\"#\" aria-current=\"page\">Ana Sayfa</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:var(--space-3);min-height:var(--nav-item-height);padding:0 var(--space-3);border-radius:var(--radius-button);color:var(--text-secondary);font-family:var(--font-inter),Arial,sans-serif;font-size:var(--text-small);font-weight:var(--weight-strong);text-decoration:none;transition:background-color var(--motion-duration) var(--motion-easing),color var(--motion-duration) var(--motion-easing)}.ds-nav:hover{background:var(--surface-2);color:var(--text-primary)}.ds-nav[aria-current=\"page\"]{background:var(--primary-soft);color:var(--text-primary)}.ds-nav:focus-visible { outline: 2px solid var(--primary-hover); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "overview": "Görsel otorite docs/03_DESIGN_SYSTEM.md dosyasıdır. Bu kayıt mevcut shell ve primitives uygulamasını açıklar; yeni bir görsel yön belirlemez. Makine tarafından okunabilir değerler frontmatter içinde, çalışan CSS tokenları styles/tokens.css içinde yer alır.\n\nDokümanların belirlediği yön Linear × Vercel × Apple productivity app: koyu tema öncelikli, premium, minimal, kompakt, sakin ve bilgi yoğun bir kişisel çalışma alanı. Okunabilirlik ve işlevsellik görsel süslemenin önünde kalır. Şu an yalnız ortak kabuk ve boş sayfalar uygulanmıştır; veri ekranlarının kuralları kaynak dokümanda kalır.",
+    "keyCharacteristics": [
+      "Koyu lacivert yüzeyler ve ölçülü mavi vurgu.",
+      "Kompakt navigasyon ve okunabilir tipografik hiyerarşi.",
+      "Ortak semantic tokenlar ve tutarlı UI primitives.",
+      "Mobilde ayrı navigasyon düzeni ve klavye ile erişilebilir kontroller."
+    ],
+    "rules": [],
+    "dos": [
+      "Do kaynak doküman ve semantic tokenlarla yeni ekranları kur.",
+      "Do açıklamalarda secondary metni ve görünür keyboard focus’u koru.",
+      "Do ikon aksiyonlarını erişilebilir ad ve uygun tooltip ile sun.",
+      "Do mobil navigasyonu ve safe-area boşluklarını koru.",
+      "Do durumları renk yanında anlaşılır metinle ilet."
+    ],
+    "donts": [
+      "Don’t rastgele renk, gradient, radius veya sayfaya özel button stili ekle.",
+      "Don’t aşırı glow, yaygın glassmorphism veya çocukça gamification kullan.",
+      "Don’t emoji’yi ana UI ikonu olarak kullan.",
+      "Don’t boş route’ları tamamlanmış veri veya AI özellikleri olarak sun."
+    ]
+  }
+}
