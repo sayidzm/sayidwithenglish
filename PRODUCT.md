@@ -4,8 +4,12 @@ Bu dosya kısa bir bağlam özetidir. Ürün kararlarında [Proje Kararları](do
 
 İlk kullanıcı Sayid'dir. Arayüz ve ana dil Türkçe, öğrenilen dil İngilizcedir. Amaç, kullanıcının günlük hayatta karşılaştığı İngilizceyi kendi öğrenme içeriğine dönüştürmektir. Ana motto: **Kendi kelimelerinle, daha derin, daha kalıcı öğren.**
 
-Hedef ürün döngüsü **Capture → Understand → Save → Practice → Review → Master** şeklindedir. Gelecek ürün; içerik toplama, kullanıcı tarafından düzenlenebilir AI zenginleştirme, kişisel kütüphane, öğrenme/tekrar oturumları ve AI Tutor etrafında çalışacaktır. Bunlar mevcut uygulamanın tamamlanmış özellikleri değildir.
+Hedef ürün döngüsü **Capture → Understand → Save → Practice → Review → Master** şeklindedir. Ürün; içerik toplama, kullanıcı tarafından düzenlenebilir AI zenginleştirme, kişisel kütüphane, öğrenme/tekrar oturumları ve AI Tutor etrafında çalışacaktır.
 
-Görsel yön koyu tema öncelikli, minimal, kompakt, profesyonel ve okunabilir çalışma alanıdır. Çocukça gamification, aşırı gradient, neon cyberpunk ve yaygın glassmorphism bu yönle uyuşmaz.
+Mevcut frontend bu döngüyü sekiz dolu ekranla görünür kılan etkileşimli bir mock prototiptir: dashboard, Ekle, Kütüphane, Öğren, Tekrar, AI Tutor, İstatistikler ve Ayarlar. Hazır ifadelerden sonuç oluşturma/kaydetme, kütüphane filtreleme/detay/not düzenleme, örnek flashcard değerlendirme, yerel tutor yanıtları, örnek alıştırmalar ve ayar kaydetme çalışır. Ortak React provider kayıt, ayar ve tekrar sayacını sayfa geçişleri boyunca bellekte tutar; yeniden yükleme örnek başlangıca döner.
 
-Mevcut uygulama yalnız responsive AppShell, sekiz boş route ve ortak UI primitives içerir. Backend, Supabase, veritabanı ve AI entegrasyonu bu aşamaya dahil değildir. Kurulum ve kesin uygulama sınırları [README.md](README.md) içinde; uygulanan görsel tokenlar [DESIGN.md](DESIGN.md) içinde yer alır.
+On ayrıntılı örnek kayıt ile 342 kayıtlık örnek toplam birbirinden ayrıdır. Grafikler ve çoğu KPI fixture'dır. AI işleme ve tutor hazır içerik kullanır; gerçek AI veya SRS motoru değildir. Backend, auth, Supabase, veritabanı, kalıcı saklama, bulut, TTS ve sesli alıştırma bu aşamaya dahil değildir. Aksan/kart türü gibi bazı tercihler gelecekteki davranışın UI'sını gösterir.
+
+Görsel yön koyu tema öncelikli, minimal, kompakt, profesyonel ve okunabilir çalışma alanıdır. Seçilen referans ile docs/03'teki kompozisyon korunur; metin/padding okunabilirliği ve mobile özel düzen kaynak dokümanın yönüne göre iyileştirilir. Çocukça gamification, aşırı gradient, neon cyberpunk ve yaygın glassmorphism bu yönle uyuşmaz.
+
+Kurulum, kesin uygulama sınırları, doğrulama ve bu geçişin dosya envanteri [README.md](README.md) içinde; uygulanan görsel sistem ve değişmeyen normative tokenlar [DESIGN.md](DESIGN.md) içinde yer alır.

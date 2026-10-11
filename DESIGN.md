@@ -144,82 +144,90 @@ components:
 
 ## Overview
 
-Görsel otorite docs/03_DESIGN_SYSTEM.md dosyasıdır. Bu kayıt mevcut shell ve primitives uygulamasını açıklar; yeni bir görsel yön belirlemez. Makine tarafından okunabilir değerler frontmatter içinde, çalışan CSS tokenları styles/tokens.css içinde yer alır.
+Görsel otorite docs/03_DESIGN_SYSTEM.md ve docs/reference/sayidwithenglish-ui-reference.png.png dosyalarıdır. Bu kayıt ortak kabuk, primitives ve sekiz dolu mock ekranın uygulanan görsel sistemini açıklar; yeni bir görsel yön belirlemez. Makine tarafından okunabilir değerler frontmatter içinde, çalışan CSS tokenları styles/tokens.css içinde yer alır.
 
-Dokümanların belirlediği yön Linear × Vercel × Apple productivity app: koyu tema öncelikli, premium, minimal, kompakt, sakin ve bilgi yoğun bir kişisel çalışma alanı. Okunabilirlik ve işlevsellik görsel süslemenin önünde kalır. Şu an yalnız ortak kabuk ve boş sayfalar uygulanmıştır; veri ekranlarının kuralları kaynak dokümanda kalır.
+Dokümanların belirlediği yön Linear × Vercel × Apple productivity app: koyu tema öncelikli, premium, minimal, kompakt, sakin ve bilgi yoğun bir kişisel çalışma alanı. Referansın sidebar, KPI, process listesi, kütüphane tablosu, detay, flashcard, tutor ve statistics kompozisyonları mevcut sistem üzerinde uygulanmıştır. Okunabilirlik ve işlevsellik görsel süslemenin önünde kalır; docs/03 bölüm 57 doğrultusunda metin ve padding daha rahat, mobil düzen ayrı ele alınmıştır.
 
 **Key Characteristics:**
 
 - Koyu lacivert yüzeyler ve ölçülü mavi vurgu.
 - Kompakt navigasyon ve okunabilir tipografik hiyerarşi.
 - Ortak semantic tokenlar ve tutarlı UI primitives.
-- Mobilde ayrı navigasyon düzeni ve klavye ile erişilebilir kontroller.
+- Veri yoğun masaüstü panelleri ve mobile özel kart/tek kolon düzenleri.
+- Görünür keyboard focus, açıklamalı durumlar ve erişilebilir overlay kontrolleri.
 
 ## Colors
 
 ### Primary
 
-Ana mavi primary ana aksiyonlarda ve monogramda kullanılır. Primary-hover hover ve aktif ikonları belirginleştirir; primary-soft aktif navigasyona yumuşak zemin sağlar. Ana aksiyon metni on-accent kullanır: koyu metin mevcut mavi zemin üzerinde daha güçlü kontrast sağlar.
+Ana mavi primary ana aksiyonlarda, monogramda, aktivite grafiklerinde, ilerleme ve hedef göstergelerinde kullanılır. Primary-hover hover ve aktif ikonları belirginleştirir; primary-soft aktif navigasyon ve seçili durumlara yumuşak zemin sağlar. Ana aksiyon metni on-accent kullanır: koyu metin mevcut mavi zemin üzerinde daha güçlü kontrast sağlar.
 
 ### Secondary
 
-Violet, kaynak dokümanda AI ve ikincil vurgu için ayrılmıştır; mevcut badge primitive’i bu tonu destekler. Bu aşamada AI aksiyonu veya gradient yoktur.
+Violet AI ve ikincil vurgu için ayrılmıştır; Sentence/B2 badge'leri ve tür dağılımı gibi ikincil veri vurgularında kullanılır. AI işleme ve tutor, ortak yüzey ve aksiyon sisteminin içinde kalır. Gradient zorunlu bir öğe değildir; kaynak sistem yalnız AI/özel accent gibi sınırlı kullanım alanlarına izin verir.
 
 ### Neutral
 
-Background ana çalışma zemini; background-subtle sidebar ve alt navigasyon; surface-1 kart ve alanlar; surface-2 hover; surface-3 iç veya seçili yüzeyler içindir. Border ince ayrım, border-strong belirgin sınır sağlar. Ana metin text-primary; açıklama ve placeholder’lar text-secondary kullanır.
+Background ana çalışma zemini; background-subtle sidebar, alt navigasyon ve drawer; surface-1 kart ve alanlar; surface-2 hover ve iç alanlar; surface-3 seçili/iç yüzeyler içindir. Border ince ayrım, border-strong belirgin sınır sağlar. Ana metin text-primary; açıklama ve placeholder'lar text-secondary kullanır.
 
-Text-muted kaynak değeri korunmuştur ve Text pronunciation varyantına ayrılmıştır. Görünür açıklamalar secondary kullanır. Success, warning, danger ve info anlam taşıyan durumlar içindir; bilgi yalnız renkle verilmez. Soft varyantlar aynı semantik rengin düşük opacity zeminleridir.
+Text-muted kaynak değeri korunmuştur; düşük öncelikli yardımcı metinlerde kullanılır. Görünür açıklamalar secondary kullanır. Success, warning, danger ve info anlam taşıyan durumlar içindir; bilgi yalnız renkle verilmez. Öğrenme durumlarında metin ve nokta; CEFR'de A1 neutral, A2 success, B1 blue, B2 violet, C1 warning ve C2 danger eşleşmesi bulunur. Soft varyantlar aynı semantik rengin düşük opacity zeminleridir.
 
 ## Typography
 
-Inter variable font next/font/local ile Latin ve Latin-ext dosyalarından yüklenir; fallback Arial ve sans-serif’tir. Türkçe arayüz ve İngilizce içerik aynı aileyi kullanır. Frontmatter kaynak ölçeğin tüm rollerini taşır. Display tanımlıdır, mevcut boş sayfalarda kullanılmaz. H1 sayfa başlığı; H2 boş durum başlığı; H3 dialog başlığıdır.
+Inter variable font next/font/local ile Latin ve Latin-ext dosyalarından yüklenir; fallback Arial ve sans-serif'tir. Türkçe arayüz ve İngilizce içerik aynı aileyi kullanır. Frontmatter kaynak ölçeğin tüm rollerini taşır. Sayfa başlıkları headline, panel başlıkları title/subtitle ölçeğini kullanır; KPI değerleri ve flashcard ifadesi daha büyük görsel odak oluşturur.
 
-Text body, strong, small, caption, micro, expression, meaning ve pronunciation varyantlarını sağlar. Expression H2 boyut/ağırlığını, meaning secondary rengini, pronunciation small boyut/muted rengini kullanır. Sayfa açıklamaları en fazla 70ch; boş durum açıklamaları 48ch genişliğindedir.
+Text body, strong, small, caption, micro, expression, meaning ve pronunciation varyantlarını sağlar. Kayıt ifadesi belirgin ağırlık, Türkçe anlam secondary ve telaffuz daha düşük görsel öncelik kullanır. Grafik etiketleri/legend, tablo tarihleri ve durum bağlamı caption/micro ölçeğindedir. Sayfa açıklamaları en fazla 70ch; boş durum açıklamaları 48ch genişliğindedir. İngilizce örnekler lang=en ile işaretlenir.
 
 ## Layout
 
-4px spacing grid kullanılır. Desktop sidebar 216px, daraltılmış sidebar 64px, sticky topbar 56px’tir. Navigasyon satırları 40px; sidebar ikonları 18px ve stroke 1.75’tir. İçerik padding’i 24px; 1440px ve üzerinde 32px olur.
+4px spacing grid kullanılır. Desktop sidebar 216px, daraltılmış sidebar 64px, sticky topbar 56px'tir. Navigasyon satırları 40px; sidebar ikonları 18px ve stroke 1.75'tir. İçerik padding'i 24px; 1440px ve üzerinde 32px olur.
 
-640–1023px tablet aralığında sidebar sabit 64px’tir. 640px altında sidebar gizlenir; 64px alt navigasyona safe-area payı eklenir. Alt navigasyon Ana Sayfa, Kütüphane, Ekle, Tekrar, Tutor’u içerir; üst menü tüm sekiz route’u açar. Mobil içerik yatayda 16px padding ve altta navigasyon boşluğu kullanır. Mobil üst kontroller en az 44px yüksekliğindedir.
+640–1023px tablet aralığında sidebar sabit 64px'tir. 640px altında sidebar gizlenir; 64px alt navigasyona safe-area payı eklenir. Alt navigasyon Ana Sayfa, Kütüphane, Ekle, Tekrar, Tutor'u içerir; üst menü tüm sekiz route'u açar. Mobil içerik yatayda 16px padding ve altta navigasyon boşluğu kullanır. Mobil üst kontroller en az 44px yüksekliğindedir.
 
-PageHeader başlık, açıklama ve isteğe bağlı aksiyon alanını birleştirir; mobilde dikey yerleşir. Gelecek KPI gridleri, tablolar ve tutor panelleri bu aşamada uygulanmamıştır.
+Dashboard dört KPI ile başlar; haftalık aktivite ve hedef, sonra son eklenenler ve zorlanılan ifadeler, devam CTA'sı ve küçük heatmap gelir. Dar ekranlarda KPI iki kolona, ana paneller tek kolona iner; tekrar CTA'sı üstte görünür. Ekle giriş/metadata ve process/önizleme panellerini yaklaşık 61/39 oranında böler; kaynak dokümandaki 65/35 yaklaşımını responsive minimumlarla uygular. Tutor yaklaşık 70/30 konuşma/bağlam ayrımı kullanır. Ekle ve tutor 900px altında tek kolona geçer.
+
+Kütüphane masaüstü tablosu 48px satırlarla kompakt kalır. Kart ve liste alternatifleri vardır; tablet tablosunda daha düşük öncelikli kolonlar gizlenir. Mobilde tablo yerine kayıt kartları kullanılır. Detay sağdan 464px drawer olarak açılır; mobilde kullanılabilir ekran genişliğini kaplar. Başlık/footer sabit alanlar, uzun detay içeriği kaydırılabilir gövdedir.
+
+Tekrar kartı ortalanır: masaüstünde en fazla 560px genişlik ve en az 330px yükseklik. Dört değerlendirme altında yer alır. Mobil kart genişliği kullanılabilir alana uyar ve değerlendirmeler iki kolona iner. Odak modunda sidebar, topbar ve alt navigasyon gizlenir. Öğrenme modları masaüstünde üç kolon, dar ekranda iki, mobilde bir kolon olur; Ayarlar bölümleri ortak panel içinde hizalı formlar kullanır.
 
 ## Elevation & Depth
 
-Derinlik yakın tonlu yüzeyler ve ince border ile kurulur. Kart gölgesi hafif, dropdown/dialog gölgesi daha geniştir. Tam gölge değerleri sidecar extensions.shadows alanında ve CSS tokenlarında kayıtlıdır. Input focus ring’i üç piksellik yumuşak mavi çevredir; global keyboard focus ayrıca görünür outline taşır.
+Derinlik yakın tonlu yüzeyler ve ince border ile kurulur. Kart gölgesi hafif, dropdown/dialog/drawer gölgesi daha geniştir. Tam gölge değerleri sidecar extensions.shadows alanında ve CSS tokenlarında kayıtlıdır. Drawer arkasındaki koyu overlay odağı kayda taşır. Input focus ring'i üç piksellik yumuşak mavi çevredir; global keyboard focus ayrıca görünür outline taşır.
 
-Hareket süresi 150ms ve easing cubic-bezier(.2, .8, .2, 1)’dir. Geçişler hover rengi, border ve switch thumb hareketinde kullanılır. Prefers-reduced-motion geçişleri ve animasyonları kapatır.
+Hareket süresi 150ms ve easing cubic-bezier(.2, .8, .2, 1)'dir. Geçişler hover rengi, border ve switch thumb hareketinde kullanılır. Prefers-reduced-motion geçişleri ve animasyonları kapatır. AI process listesinde tamamlandı/geçerli/bekliyor ayrımı ikon, metin ve tonla yapılır.
 
 ## Shapes
 
-Badge ve tooltip köşeleri sıkı; button ve input köşeleri ortak; kart ve panel köşeleri kademeli olarak daha yumuşaktır. Modal kendi radius tokenını kullanır. Flashcard radius tokenı mevcut avatar şeklinin de kaynağıdır; flashcard bileşeni henüz yoktur. Kaynak sistem dışı radius veya sayfaya özel button biçimi eklenmez.
+Badge ve tooltip köşeleri sıkı; button ve input köşeleri ortak; kart ve panel köşeleri kademeli olarak daha yumuşaktır. Modal kendi radius tokenını kullanır. Flashcard mevcut flashcard radius tokenını kullanır; avatar şekli de aynı tokena dayanır. Grafik ve ilerleme göstergelerinde basit bar, halka ve küçük heatmap hücreleri kullanılır. Kaynak sistem dışı radius veya sayfaya özel button biçimi eklenmez.
 
 ## Components
 
-Button ve ButtonLink primary, secondary, ghost, destructive varyantlarını paylaşır. Küçük/default/büyük yükseklikler 32/36/42px’tir. Default yatay padding 12px; büyük button 16px’tir. Disabled opacity düşer; focus outline korunur. Destructive hover danger zemini ve koyu on-accent metni kullanır.
+Button ve ButtonLink primary, secondary, ghost, destructive varyantlarını paylaşır. Küçük/default/büyük yükseklikler 32/36/42px'tir. Default yatay padding 12px; büyük button 16px'tir. Disabled opacity düşer; focus outline korunur. Destructive hover danger zemini ve koyu on-accent metni kullanır. ReviewControls aynı Button primitive'ini dört semantik renk ve altında aralık metni ile birleştirir.
 
-Input surface-1 ve ince border kullanır; hover border’ı güçlendirir, focus mavi border/ring ekler, aria-invalid danger border gösterir. Textarea minimum 200px ve dikey yeniden boyutlanabilir. Mobil input metni 16px olur. Checkbox native kontrol; Switch kontrollü button’dur ve role=switch/aria-checked kullanır. Form kontrollerine caller tarafından erişilebilir etiket sağlanmalıdır.
+Input surface-1 ve ince border kullanır; hover border'ı güçlendirir, focus mavi border/ring ekler, aria-invalid danger border gösterir. Textarea primitive'i minimum 200px ve dikey yeniden boyutlanabilir; ekran içi not/yazma alanları amaçlarına göre daha kısa olabilir. Mobil input metni 16px olur. Checkbox native kontrol; Switch kontrollü button'dur ve role=switch/aria-checked kullanır. Form kontrollerine caller tarafından erişilebilir etiket sağlanmalıdır.
 
-Card ortak yüzey, border, radius ve gölgeyi taşır. CardHeader ve CardContent padding’i 20px’tir; başlıktan sonra gelen içerik üst padding’i kaldırır. Badge neutral, blue, violet, success, warning ve danger tonlarını destekler. Skeleton statik surface-3 bloğudur.
+Card ortak yüzey, border, radius ve gölgeyi taşır. CardHeader ve CardContent padding'i 20px'tir; başlıktan sonra gelen içerik üst padding'i kaldırır. Ekran panelleri aynı tokenlarla kuruludur. StatCard ikon, küçük etiket, güçlü değer ve açıklama; ChartCard başlık, bağlam ve görseli birleştirir. Aktivite barları, günlük hedef/öğrenilen halkaları, dağılım barları ve heatmap bu ortak kart dili içinde kalır. Grafiklerde metinsel erişilebilir ad/değerler bulunur; interaktif tooltip veya zoom sistemi uygulanmamıştır.
 
-Navigation aktif sayfayı aria-current=page, yumuşak mavi zemin ve belirgin ikonla gösterir. Dar sidebar’da isimlere tooltip ile ulaşılır. Mobil navigasyon beş kolondur; merkez Ekle aksiyonu mavi zeminlidir.
+Badge neutral, blue, violet, success, warning ve danger tonlarını destekler. EntryTypeBadge, LevelBadge ve LearningStatusBadge içerik sınıflamasını tutarlı taşır. Kütüphane tablo/kartlarında ifade ve anlam başta; tür, seviye ve durum sonraki hiyerarşidedir. Drawer anlam, açıklama, numaralı çift dilli örnekler, benzer ifadeler, kaynak/bağlam, deck/etiket ve kişisel not bölümlerini ayırır. Telaffuzun ses aksiyonu disabled ve açıklamalıdır.
 
-Tooltip, Dropdown ve Dialog Radix UI kullanır. Dialog focus’u içeride tutar, Escape ile kapanır ve açan elemana geri verir. Command palette yalnız sayfa adlarını filtreler; kayıt araması yoktur. EmptyState Lucide ikonu, başlık, kısa açıklama ve isteğe bağlı aksiyon taşır; maskot veya illüstrasyon içermez.
+Flashcard ön yüzünde tür/seviye, ifade, IPA ve anlamı açma aksiyonu; arka yüzde Türkçe anlam ve çift dilli örnek bulunur. Kart çevrilme animasyonu yerine içerik durumu değişir. AIProcessingPanel altı aşamayı ikon/metinle sıralar; AIResultCard ifade, sınıflama, anlam, açıklama ve örneği gösterir. TutorMessage rol/isim ayrımı kullanır; CorrectionCard orijinal, düzeltme, neden ve daha doğal ifadeyi ayrı satırlarda sunar.
+
+Navigation aktif sayfayı aria-current=page, yumuşak mavi zemin ve belirgin ikonla gösterir. Dar sidebar'da isimlere tooltip ile ulaşılır. Mobil navigasyon beş kolondur; merkez Ekle aksiyonu mavi zeminlidir. Tooltip, Dropdown, Dialog ve detay drawer Radix UI kullanır. Dialog/drawer focus'u içeride tutar, Escape ile kapanır ve açan elemana geri verir. Command palette yalnız sayfa adlarını filtreler; kayıt araması kütüphane alanındadır. EmptyState Lucide ikonu, başlık, kısa açıklama ve isteğe bağlı aksiyon taşır; filtre sonucu bulunmadığında temizleme aksiyonu sunulur. Skeleton statik surface-3 bloğudur.
 
 ## Do's and Don'ts
 
 ### Do:
 
 - Do kaynak doküman ve semantic tokenlarla yeni ekranları kur.
-- Do açıklamalarda secondary metni ve görünür keyboard focus’u koru.
+- Do açıklamalarda secondary metni ve görünür keyboard focus'u koru.
 - Do ikon aksiyonlarını erişilebilir ad ve uygun tooltip ile sun.
 - Do mobil navigasyonu ve safe-area boşluklarını koru.
 - Do durumları renk yanında anlaşılır metinle ilet.
+- Do veri yoğun masaüstü düzenini mobilde kart ve tek kolon yerleşime dönüştür.
 
 ### Don't:
 
-- Don’t rastgele renk, gradient, radius veya sayfaya özel button stili ekle.
-- Don’t aşırı glow, yaygın glassmorphism veya çocukça gamification kullan.
-- Don’t emoji’yi ana UI ikonu olarak kullan.
-- Don’t boş route’ları tamamlanmış veri veya AI özellikleri olarak sun.
+- Don't rastgele renk, gradient, radius veya sayfaya özel button stili ekle.
+- Don't aşırı glow, yaygın glassmorphism veya çocukça gamification kullan.
+- Don't emoji'yi ana UI ikonu olarak kullan.
+- Don't mock sonuçları veya örnek veri toplamlarını gerçek AI/kalıcı ürün davranışı gibi sun.

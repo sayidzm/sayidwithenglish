@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { Statistics } from "@/components/workspace/statistics";
 
 export const metadata: Metadata = { title: "İstatistikler" };
 
 export default function Page() {
-  return <PlaceholderPage page="statistics" />;
+  return <Statistics />;
 }

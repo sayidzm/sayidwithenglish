@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-11T12:00:28.013Z",
+  "generatedAt": "2026-10-11T13:27:16.9864358Z",
   "title": "Design System: sayidwithenglish",
   "extensions": {
     "colorMeta": {
@@ -100,7 +100,7 @@
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Kaynak ölçek tokenı; boş sayfalarda kullanılmaz."
+        "purpose": "Büyük değer ve flashcard odak metinleri için kaynak ölçek."
       },
       "headline": {
         "displayName": "H1",
@@ -108,7 +108,7 @@
       },
       "title": {
         "displayName": "H2",
-        "purpose": "Boş durum başlığı."
+        "purpose": "Panel ve boş durum başlıkları."
       },
       "body": {
         "displayName": "Body",
@@ -124,7 +124,7 @@
       {
         "name": "overlay",
         "value": "0 24px 80px rgb(0 0 0 / 45%)",
-        "purpose": "Dropdown ve Dialog."
+        "purpose": "Dropdown, Dialog ve detay drawer."
       },
       {
         "name": "focus-ring",
@@ -213,7 +213,7 @@
       "kind": "card",
       "refersTo": "card",
       "description": "CardHeader ve CardContent birlikte.",
-      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">Çalışma alanı</div><div class=\"ds-card-content\">Henüz hiçbir kayıt yok.</div></div>",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">Haftalık Aktivite</div><div class=\"ds-card-content\">Son 7 gün · Örnek çalışma alanı</div></div>",
       "css": ".ds-card{border:1px solid var(--border);border-radius:var(--radius-card);background:var(--surface-1);box-shadow:var(--shadow-card);color:var(--text-primary);font:var(--text-body) var(--font-inter),Arial,sans-serif}.ds-card-header{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-5)}.ds-card-content{padding:var(--space-5);color:var(--text-secondary)}.ds-card-header+.ds-card-content{padding-top:0}"
     },
     {
@@ -226,26 +226,28 @@
     }
   ],
   "narrative": {
-    "overview": "Görsel otorite docs/03_DESIGN_SYSTEM.md dosyasıdır. Bu kayıt mevcut shell ve primitives uygulamasını açıklar; yeni bir görsel yön belirlemez. Makine tarafından okunabilir değerler frontmatter içinde, çalışan CSS tokenları styles/tokens.css içinde yer alır.\n\nDokümanların belirlediği yön Linear × Vercel × Apple productivity app: koyu tema öncelikli, premium, minimal, kompakt, sakin ve bilgi yoğun bir kişisel çalışma alanı. Okunabilirlik ve işlevsellik görsel süslemenin önünde kalır. Şu an yalnız ortak kabuk ve boş sayfalar uygulanmıştır; veri ekranlarının kuralları kaynak dokümanda kalır.",
+    "overview": "Görsel otorite docs/03_DESIGN_SYSTEM.md ve docs/reference/sayidwithenglish-ui-reference.png.png dosyalarıdır. Bu kayıt ortak kabuk, primitives ve sekiz dolu mock ekranın uygulanan görsel sistemini açıklar; yeni bir görsel yön belirlemez. Makine tarafından okunabilir değerler frontmatter içinde, çalışan CSS tokenları styles/tokens.css içinde yer alır.\n\nDokümanların belirlediği yön Linear × Vercel × Apple productivity app: koyu tema öncelikli, premium, minimal, kompakt, sakin ve bilgi yoğun bir kişisel çalışma alanı. Referansın sidebar, KPI, process listesi, kütüphane tablosu, detay, flashcard, tutor ve statistics kompozisyonları mevcut sistem üzerinde uygulanmıştır. Okunabilirlik ve işlevsellik görsel süslemenin önünde kalır; docs/03 bölüm 57 doğrultusunda metin ve padding daha rahat, mobil düzen ayrı ele alınmıştır.",
     "keyCharacteristics": [
       "Koyu lacivert yüzeyler ve ölçülü mavi vurgu.",
       "Kompakt navigasyon ve okunabilir tipografik hiyerarşi.",
       "Ortak semantic tokenlar ve tutarlı UI primitives.",
-      "Mobilde ayrı navigasyon düzeni ve klavye ile erişilebilir kontroller."
+      "Veri yoğun masaüstü panelleri ve mobile özel kart/tek kolon düzenleri.",
+      "Görünür keyboard focus, açıklamalı durumlar ve erişilebilir overlay kontrolleri."
     ],
     "rules": [],
     "dos": [
       "Do kaynak doküman ve semantic tokenlarla yeni ekranları kur.",
-      "Do açıklamalarda secondary metni ve görünür keyboard focus’u koru.",
+      "Do açıklamalarda secondary metni ve görünür keyboard focus'u koru.",
       "Do ikon aksiyonlarını erişilebilir ad ve uygun tooltip ile sun.",
       "Do mobil navigasyonu ve safe-area boşluklarını koru.",
-      "Do durumları renk yanında anlaşılır metinle ilet."
+      "Do durumları renk yanında anlaşılır metinle ilet.",
+      "Do veri yoğun masaüstü düzenini mobilde kart ve tek kolon yerleşime dönüştür."
     ],
     "donts": [
-      "Don’t rastgele renk, gradient, radius veya sayfaya özel button stili ekle.",
-      "Don’t aşırı glow, yaygın glassmorphism veya çocukça gamification kullan.",
-      "Don’t emoji’yi ana UI ikonu olarak kullan.",
-      "Don’t boş route’ları tamamlanmış veri veya AI özellikleri olarak sun."
+      "Don't rastgele renk, gradient, radius veya sayfaya özel button stili ekle.",
+      "Don't aşırı glow, yaygın glassmorphism veya çocukça gamification kullan.",
+      "Don't emoji'yi ana UI ikonu olarak kullan.",
+      "Don't mock sonuçları veya örnek veri toplamlarını gerçek AI/kalıcı ürün davranışı gibi sun."
     ]
   }
 }

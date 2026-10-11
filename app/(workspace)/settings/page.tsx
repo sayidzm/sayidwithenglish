@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { Settings } from "@/components/workspace/settings";
 
 export const metadata: Metadata = { title: "Ayarlar" };
 
 export default function Page() {
-  return <PlaceholderPage page="settings" />;
+  return <Settings />;
 }

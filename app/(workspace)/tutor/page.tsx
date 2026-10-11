@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { Tutor } from "@/components/workspace/tutor";
 
 export const metadata: Metadata = { title: "AI Tutor" };
 
 export default function Page() {
-  return <PlaceholderPage page="tutor" />;
+  return <Tutor />;
 }

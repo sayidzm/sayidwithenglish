@@ -28,12 +28,23 @@ const captures = await Promise.all(expected.map(async ({ name, dimensions }) => 
   const width = bytes.readUInt32BE(16);
   const height = bytes.readUInt32BE(20);
   const modifiedAt = (await stat(path)).mtimeMs;
-  if (!signatureValid || width !== dimensions[0] || height !== dimensions[1] || modifiedAt < latestSourceTime) {
+  if (!signatureValid || width !== dimensions[0] || height < dimensions[1] || modifiedAt < latestSourceTime) {
     throw new Error(`Invalid, incorrectly sized, or stale capture: ${name}`);
   }
   return { path: resolve(path), width, height, signatureValid, fresh: true, modifiedAt: new Date(modifiedAt).toISOString() };
 }));
 
+const prototypeManifest = JSON.parse(await readFile(join(root, "qa", "final", "manifest.json"), "utf8"));
+if (prototypeManifest.captures.length !== 42) throw new Error("Incomplete prototype capture matrix");
+for (const capture of prototypeManifest.captures) {
+  const bytes = await readFile(capture.path);
+  const signatureValid = bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+  const width = bytes.readUInt32BE(16); const height = bytes.readUInt32BE(20);
+  const modifiedAt = (await stat(capture.path)).mtimeMs;
+  const heightValid = capture.fullPage ? height >= capture.viewport.height : height === capture.viewport.height;
+  if (!signatureValid || width !== capture.viewport.width || !heightValid || modifiedAt < latestSourceTime || capture.errors.length || capture.metrics.documentWidth > capture.viewport.width) throw new Error(`Invalid prototype capture: ${capture.path}`);
+  captures.push({ path: resolve(capture.path), width, height, signatureValid, fresh: true, modifiedAt: new Date(modifiedAt).toISOString() });
+}
 const manifest = { captureCount: captures.length, latestSourceTime: new Date(latestSourceTime).toISOString(), generatedAt: new Date().toISOString(), captures };
 await writeFile(join(root, "qa", "capture-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
-console.log(`${captures.length} PNG captures: signatures, viewport dimensions, and source freshness verified.`);
+console.log(`${captures.length} PNG captures: signatures, viewport/full-page dimensions, and source freshness verified.`);

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/layout/placeholder-page";
+import { Add } from "@/components/workspace/add";
 
 export const metadata: Metadata = { title: "Ekle" };
 
 export default function Page() {
-  return <PlaceholderPage page="add" />;
+  return <Add />;
 }

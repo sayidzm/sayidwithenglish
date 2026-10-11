@@ -16,6 +16,10 @@
 /playwright-report/
 /qa/screenshots/
 /qa/capture-manifest.json
+/qa/reference/
+/qa/round-*/
+/qa/final/
+/qa/diff/
 
 # next.js
 /.next/
