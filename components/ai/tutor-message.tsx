@@ -1,9 +1,15 @@
 import { Check, Sparkles } from "lucide-react";
-import { correctionExample, type ChatMessage } from "@/lib/mock-data";
+import type { TutorOutput } from "@/lib/ai/schemas";
 import s from "@/components/workspace/workspace.module.css";
 
-export function CorrectionCard() {
-  const c = correctionExample;
+export type TutorUiMessage = {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+  correction?: TutorOutput["correction"];
+};
+
+export function CorrectionCard({ correction: c }: { correction: NonNullable<TutorOutput["correction"]> }) {
   return (
     <section className={s.correction}>
       <h3>
@@ -33,7 +39,7 @@ export function CorrectionCard() {
     </section>
   );
 }
-export function TutorMessage({ message }: { message: ChatMessage }) {
+export function TutorMessage({ message }: { message: TutorUiMessage }) {
   return (
     <article className={s.message} data-role={message.role}>
       {message.role === "assistant" && (
@@ -46,7 +52,7 @@ export function TutorMessage({ message }: { message: ChatMessage }) {
           {message.role === "assistant" ? "AI Tutor" : "Sen"}
         </p>
         <div className={s.messageText}>{message.text}</div>
-        {message.correction && <CorrectionCard />}
+        {message.correction && <CorrectionCard correction={message.correction} />}
       </div>
     </article>
   );

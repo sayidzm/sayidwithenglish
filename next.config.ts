@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   },
   cacheComponents: true,
   partialPrefetching: true,
+  // LAN development erişimi (dev-only, production'ı etkilemez).
+  allowedDevOrigins: ["192.168.1.111"],
   turbopack: {
     rules: {
       // CSS Modules must retain Next.js' native module processing.

@@ -44,7 +44,13 @@ export function startAuthApi(port = 54329) {
       created_at: user.created_at,
       updated_at: user.created_at,
     };
-    const record = { user, profile, password };
+    const record = {
+      user, profile, password,
+      vocabulary: {
+        entries: [], entry_meanings: [], entry_examples: [], similar_expressions: [],
+        entry_sources: [], decks: [], deck_entries: [], tags: [], entry_tags: [],
+      },
+    };
     users.set(email, record);
     return record;
   };
@@ -185,6 +191,99 @@ export function startAuthApi(port = 54329) {
         });
       const singular = req.headers.accept?.includes("vnd.pgrst.object");
       return send(200, singular ? record.profile : [record.profile]);
+    }
+    const table = url.pathname.replace(/^\/rest\/v1\//, "");
+    if (record && table in record.vocabulary) {
+      const store = record.vocabulary;
+      const rows = store[table];
+      const singular = req.headers.accept?.includes("vnd.pgrst.object");
+      const ownedEntry = (entryId) => store.entries.some((entry) =>
+        entry.id === entryId && entry.user_id === record.user.id);
+      const permitted = (row) => {
+        if (table === "entries" || table === "decks" || table === "tags")
+          return row.user_id === record.user.id;
+        if (table === "deck_entries")
+          return ownedEntry(row.entry_id) && store.decks.some((deck) =>
+            deck.id === row.deck_id && deck.user_id === record.user.id);
+        if (table === "entry_tags")
+          return ownedEntry(row.entry_id) && store.tags.some((tag) =>
+            tag.id === row.tag_id && tag.user_id === record.user.id);
+        return ownedEntry(row.entry_id);
+      };
+      const filtered = () => rows.filter((row) => permitted(row) &&
+        [...url.searchParams].every(([key, expression]) => {
+          if (key === "select" || key === "order" || key === "limit" || key === "offset") return true;
+          if (expression === "is.null") return row[key] === null;
+          if (expression.startsWith("eq.")) return String(row[key]) === expression.slice(3);
+          return true;
+        }));
+      const decorate = (entry) => ({
+        ...entry,
+        entry_meanings: store.entry_meanings.filter((item) => item.entry_id === entry.id),
+        entry_examples: store.entry_examples.filter((item) => item.entry_id === entry.id),
+        similar_expressions: store.similar_expressions.filter((item) => item.entry_id === entry.id),
+        entry_sources: store.entry_sources.filter((item) => item.entry_id === entry.id),
+        deck_entries: store.deck_entries.filter((item) => item.entry_id === entry.id).map((item) => ({
+          ...item, decks: store.decks.find((deck) => deck.id === item.deck_id) || null,
+        })),
+        entry_tags: store.entry_tags.filter((item) => item.entry_id === entry.id).map((item) => ({
+          ...item, tags: store.tags.find((tag) => tag.id === item.tag_id) || null,
+        })),
+      });
+      if (req.method === "GET") {
+        const found = filtered();
+        if (table === "entries") found.sort((a, b) => b.created_at.localeCompare(a.created_at));
+        const selected = table === "entries" ? found.map(decorate) : found;
+        return send(200, singular ? selected[0] || null : selected);
+      }
+      if (req.method === "POST") {
+        const payload = Array.isArray(body) ? body : [body];
+        const created = [];
+        for (const item of payload) {
+          if (table === "entries") {
+            const normalized_expression = item.expression
+              .replace(/[’‘]/g, "'").replace(/[“”]/g, '"')
+              .replace(/[‐‑–—]/g, "-").replace(/\s+/g, " ")
+              .trim().toLowerCase().replace(/^[\p{P}]+|[\p{P}]+$/gu, "");
+            if (rows.some((entry) => entry.normalized_expression === normalized_expression && !entry.deleted_at))
+              return send(409, { code: "23505", message: "duplicate key value violates unique constraint" });
+            item.normalized_expression = normalized_expression;
+            item.user_id = record.user.id;
+            item.deleted_at = null;
+            item.learning_status = "new";
+            item.is_difficult = false;
+            item.is_mastered = false;
+          }
+          if (table === "decks" || table === "tags") {
+            item.user_id = record.user.id;
+            if (rows.some((row) => row.name.toLowerCase() === item.name.toLowerCase()))
+              return send(409, { code: "23505", message: "duplicate name" });
+          }
+          if (table === "deck_entries" && !ownedEntry(item.entry_id)) return send(403, { message: "forbidden" });
+          if (table === "entry_tags" && !ownedEntry(item.entry_id)) return send(403, { message: "forbidden" });
+          if (!["entries", "decks", "tags"].includes(table) && !["deck_entries", "entry_tags"].includes(table) && !ownedEntry(item.entry_id))
+            return send(403, { message: "forbidden" });
+          const row = { id: randomUUID(), created_at: new Date().toISOString(), updated_at: new Date().toISOString(), ...item };
+          rows.push(row);
+          created.push(row);
+        }
+        return send(201, singular ? created[0] : created);
+      }
+      if (req.method === "PATCH") {
+        const found = filtered();
+        if (table === "entries") {
+          for (const row of found) {
+            if (body.expression) {
+              const normalized = body.expression.trim().toLowerCase().replace(/^[\p{P}]+|[\p{P}]+$/gu, "");
+              if (rows.some((other) => other.id !== row.id && !other.deleted_at && other.normalized_expression === normalized))
+                return send(409, { code: "23505", message: "duplicate key" });
+              row.normalized_expression = normalized;
+            }
+            Object.assign(row, body, { updated_at: new Date().toISOString() });
+          }
+        }
+        return send(200, singular ? found[0] || null : found);
+      }
     }
     return send(404, { message: "fixture route not implemented" });
   });

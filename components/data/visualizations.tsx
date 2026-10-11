@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Crown, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { activityHeatmap, overview, weeklyActivity } from "@/lib/mock-data";
 import s from "@/components/workspace/workspace.module.css";
 
 export function ChartCard({
@@ -67,13 +66,14 @@ export function StatCard({
 }
 export function ActivityChart({
   mode = "bars",
-  data = weeklyActivity,
+  data,
 }: {
   mode?: "bars" | "line";
-  data?: typeof weeklyActivity;
+  data: { day: string; reviews: number; learned: number }[];
 }) {
+  const scale = Math.max(1, ...data.map((point) => Math.max(point.reviews, point.learned)));
   const points = data
-    .map((d, i) => `${20 + i * 80},${132 - d.reviews * 3.3}`)
+    .map((d, i) => `${20 + i * 80},${132 - d.reviews / scale * 120}`)
     .join(" ");
   return (
     <div
@@ -114,7 +114,7 @@ export function ActivityChart({
               <circle
                 key={d.day}
                 cx={20 + i * 80}
-                cy={132 - d.reviews * 3.3}
+                cy={132 - d.reviews / scale * 120}
                 r="3"
                 fill="var(--primary)"
               >
@@ -132,11 +132,11 @@ export function ActivityChart({
               >
                 <div
                   className={s.chartBar}
-                  style={{ height: `${(d.reviews / 40) * 100}%` }}
+                  style={{ height: `${(d.reviews / scale) * 100}%` }}
                 />
                 <div
                   className={s.chartNewBar}
-                  style={{ height: `${(d.learned / 40) * 100}%` }}
+                  style={{ height: `${(d.learned / scale) * 100}%` }}
                 />
               </div>
             ))}
@@ -202,9 +202,9 @@ export function Donut({
   );
 }
 export function DailyGoalCard({
-  goal = overview.reviewGoal,
+  goal, completed, good, hard, again,
 }: {
-  goal?: number;
+  goal: number; completed: number; good: number; hard: number; again: number;
 }) {
   return (
     <ChartCard
@@ -213,41 +213,41 @@ export function DailyGoalCard({
     >
       <div className={s.goal}>
         <Donut
-          value={overview.reviews}
+          value={completed}
           total={goal}
           label="tekrar tamamlandı"
         />
         <div className={s.goalLegend}>
           <div>
             <i className={s.dot} style={{ background: "var(--success)" }} />
-            İyi / kolay<strong>18</strong>
+            İyi / kolay<strong>{good}</strong>
           </div>
           <div>
             <i className={s.dot} style={{ background: "var(--warning)" }} />
-            Zor<strong>4</strong>
+            Zor<strong>{hard}</strong>
           </div>
           <div>
             <i className={s.dot} style={{ background: "var(--danger)" }} />
-            Tekrar<strong>2</strong>
+            Tekrar<strong>{again}</strong>
           </div>
         </div>
       </div>
       <p className={s.goalFooter}>
-        {goal > overview.reviews
-          ? `${goal - overview.reviews} tekrar daha, bugünkü hedefin tamam!`
+        {goal > completed
+          ? `${goal - completed} tekrar daha, bugünkü hedefin tamam!`
           : "Bugünkü hedefin tamamlandı. Harika ilerliyorsun!"}
       </p>
     </ChartCard>
   );
 }
-export function ActivityHeatmap() {
+export function ActivityHeatmap({ data }: { data: number[] }) {
   return (
     <div
       role="img"
-      aria-label="Son 12 hafta: 67 aktif çalışma günü"
+      aria-label={`Son 12 hafta: ${data.filter(Boolean).length} aktif çalışma günü`}
       className={s.heatmap}
     >
-      {activityHeatmap.map((level, i) => (
+      {data.map((level, i) => (
         <span key={i} data-level={level} className={s.heatCell} />
       ))}
     </div>

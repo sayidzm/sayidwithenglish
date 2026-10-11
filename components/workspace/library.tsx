@@ -10,24 +10,35 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button, ButtonLink } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EntryTable, EntryCard } from "@/components/vocabulary/entry-table";
 import { EntryDetailDrawer } from "@/components/vocabulary/entry-detail-drawer";
-import { usePrototype } from "./prototype-provider";
+import { softDeleteVocabularyEntry, updateVocabularyEntry } from "@/lib/vocabulary/mutations";
+import type { MutationResult } from "@/lib/vocabulary/types";
 import {
   entryTypes,
   levels,
   statuses,
-  overview,
-  mockEntries,
   type Entry,
 } from "@/lib/mock-data";
 import s from "./workspace.module.css";
 
-export function Library() {
-  const { entries } = usePrototype();
+export function Library({ initialEntries, loadError, initialSelectedId, today, weekStart }: {
+  initialEntries: Entry[];
+  loadError: string | null;
+  initialSelectedId: string | null;
+  today: string;
+  weekStart: string;
+}) {
+  const router = useRouter();
+  const [localChanges, setLocalChanges] = useState<Record<string, Entry>>({});
+  const [removedIds, setRemovedIds] = useState<string[]>([]);
+  const entries = initialEntries
+    .filter((item) => !removedIds.includes(item.id))
+    .map((item) => localChanges[item.id] || item);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("");
   const [level, setLevel] = useState("");
@@ -35,7 +46,7 @@ export function Library() {
   const [source, setSource] = useState("");
   const [date, setDate] = useState("");
   const [view, setView] = useState<"table" | "cards" | "list">("table");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelectedId);
   const sources = Array.from(new Set(entries.map((e) => e.sourceType)));
   const filtered = entries.filter(
     (e) =>
@@ -47,7 +58,9 @@ export function Library() {
       (!status || e.status === status) &&
       (!source || e.sourceType === source) &&
       (!date ||
-        (date === "today" ? e.date === "2026-10-11" : e.date >= "2026-10-05")),
+        (date === "today"
+          ? e.date === today
+          : e.date >= weekStart)),
   );
   const select = (entry: Entry) => setSelectedId(entry.id);
   const hasFilters = !!(query || type || level || status || source || date);
@@ -59,11 +72,36 @@ export function Library() {
     setSource("");
     setDate("");
   }
+  async function saveEntry(entry: Entry): Promise<MutationResult> {
+    const outcome = await updateVocabularyEntry(entry.id, {
+      expression: entry.expression,
+      entryType: entry.type,
+      cefrLevel: entry.level,
+      englishExplanation: entry.definition,
+      pronunciationIpa: entry.ipa,
+      pronunciationReadable: entry.pronunciationReadable || "",
+      userNote: entry.note,
+    });
+    if (outcome.ok) {
+      setLocalChanges((current) => ({ ...current, [entry.id]: entry }));
+      router.refresh();
+    }
+    return outcome;
+  }
+  async function deleteEntry(entry: Entry): Promise<MutationResult> {
+    const outcome = await softDeleteVocabularyEntry(entry.id);
+    if (outcome.ok) {
+      setRemovedIds((current) => [...current, entry.id]);
+      setSelectedId(null);
+      router.refresh();
+    }
+    return outcome;
+  }
   return (
     <>
       <PageHeader
         title="Kütüphane"
-        description={`${overview.total + entries.length - mockEntries.length} kayıt. Karşılaştığın İngilizce, kendi koleksiyonunda.`}
+        description={`${entries.length} kayıt. Karşılaştığın İngilizce, kendi koleksiyonunda.`}
         actions={
           <ButtonLink href="/add" size="small">
             <Plus size={14} />
@@ -83,7 +121,7 @@ export function Library() {
             />
           </div>
           <div className={s.row}>
-            <span className={s.caption}>{filtered.length} örnek kayıt</span>
+            <span className={s.caption}>{filtered.length} kayıt</span>
             <div className={s.viewSwitch} aria-label="Görünüm">
               {(
                 [
@@ -167,20 +205,20 @@ export function Library() {
           )}
         </div>
         <section className={s.panel} aria-label="Kayıtlar">
-          {filtered.length === 0 ? (
+          {loadError ? (
+            <div className={s.emptyResults} role="alert">
+              <h2>{loadError}</h2>
+              <Button variant="secondary" size="small" style={{ marginTop: 16 }}
+                onClick={() => router.refresh()}>Tekrar dene</Button>
+            </div>
+          ) : filtered.length === 0 ? (
             <div className={s.emptyResults}>
-              <h2>Bu filtrelere uyan kayıt yok</h2>
+              <h2>{hasFilters ? "Bu filtrelere uyan kayıt yok" : "Henüz kayıt yok"}</h2>
               <p style={{ marginTop: 8 }}>
-                Başka bir ifade ara veya filtreleri temizle.
+                {hasFilters ? "Başka bir ifade ara veya filtreleri temizle." : "İlk ifadenle kütüphaneni oluşturmaya başla."}
               </p>
-              <Button
-                variant="secondary"
-                size="small"
-                style={{ marginTop: 16 }}
-                onClick={reset}
-              >
-                Filtreleri temizle
-              </Button>
+              {hasFilters ? <Button variant="secondary" size="small" style={{ marginTop: 16 }} onClick={reset}>Filtreleri temizle</Button>
+                : <ButtonLink href="/add" size="small" style={{ marginTop: 16 }}>İfade ekle</ButtonLink>}
             </div>
           ) : (
             <>
@@ -210,7 +248,7 @@ export function Library() {
             </>
           )}
           <div className={s.tableFooter}>
-            <span>{filtered.length} kayıt gösteriliyor · Örnek koleksiyon</span>
+            <span>{filtered.length} kayıt gösteriliyor</span>
             <span className={s.row}>
               1 / 1<ArrowRight size={14} />
             </span>
@@ -222,7 +260,12 @@ export function Library() {
       </div>
       <EntryDetailDrawer
         entry={entries.find((e) => e.id === selectedId) ?? null}
-        onClose={() => setSelectedId(null)}
+        onClose={() => {
+          setSelectedId(null);
+          if (initialSelectedId) router.replace("/library", { scroll: false });
+        }}
+        onSave={saveEntry}
+        onDelete={deleteEntry}
       />
     </>
   );

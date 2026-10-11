@@ -26,9 +26,9 @@ import {
 } from "@/lib/mock-data";
 import s from "./workspace.module.css";
 
-export function Settings({ profile }: { profile: Profile }) {
+export function Settings({ profile, enabledCardTypes }: { profile: Profile; enabledCardTypes: string[] }) {
   const { settings, saveSettings } = usePrototype();
-  const [form, setForm] = useState(settings);
+  const [form, setForm] = useState({ ...settings, cardTypes: enabledCardTypes });
   const [saved, setSaved] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState("");
@@ -214,18 +214,18 @@ export function Settings({ profile }: { profile: Profile }) {
               <h2>Flashcard türleri</h2>
             </div>
             {flashcardTypes.map((type) => (
-              <div key={type} className={s.settingRow}>
-                <label htmlFor={`card-${type}`}>{type}</label>
+              <div key={type.id} className={s.settingRow}>
+                <label htmlFor={`card-${type.id}`}>{type.label}</label>
                 <Switch
-                  id={`card-${type}`}
-                  aria-label={type}
-                  checked={form.cardTypes.includes(type)}
+                  id={`card-${type.id}`}
+                  aria-label={type.label}
+                  checked={form.cardTypes.includes(type.id)}
                   onCheckedChange={(checked) =>
                     change(
                       "cardTypes",
                       checked
-                        ? [...form.cardTypes, type]
-                        : form.cardTypes.filter((item) => item !== type),
+                        ? [...form.cardTypes, type.id]
+                        : form.cardTypes.filter((item) => item !== type.id),
                     )
                   }
                 />
@@ -283,7 +283,7 @@ export function Settings({ profile }: { profile: Profile }) {
         <div className={s.settingsFooter}>
           <p role="status" className={s.caption}>
             {saved
-              ? "Profil ve öğrenme hedeflerin kaydedildi. Kart türleri ve kısayollar bu oturumda tutulur."
+              ? "Profil, öğrenme hedefleri ve kart türleri kaydedildi. Kısayol tercihi bu oturumda tutulur."
               : ""}
           </p>
           {error && (

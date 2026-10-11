@@ -11,6 +11,8 @@ export type Entry = {
   meanings: string[];
   definition: string;
   ipa: string;
+  pronunciationReadable?: string;
+  originalInput?: string;
   examples: Example[];
   similar: string[];
   source: string;
@@ -293,11 +295,14 @@ export const previousWeeklyActivity = [
   { day: "Paz", reviews: 16, learned: 5 },
 ];
 export const flashcardTypes = [
-  "İngilizce → Türkçe",
-  "Türkçe → İngilizce",
-  "Boşluk doldurma",
-  "Örnek cümleden anlam",
-];
+  { id: "en_to_tr", label: "İngilizce → Türkçe" },
+  { id: "tr_to_en", label: "Türkçe → İngilizce" },
+  { id: "meaning", label: "Tanımdan ifade" },
+  { id: "cloze", label: "Boşluk doldurma" },
+  { id: "sentence_completion", label: "Cümle tamamlama" },
+  { id: "translation", label: "Çeviri" },
+  { id: "production", label: "Cümle kurma" },
+] as const;
 export const cefrDistribution = [
   { label: "A1", value: 32 },
   { label: "A2", value: 68 },
@@ -470,7 +475,7 @@ export const initialSettings: WorkspaceSettings = {
   reviewGoal: 30,
   newLimit: 5,
   accent: "US",
-  cardTypes: ["İngilizce → Türkçe", "Türkçe → İngilizce", "Boşluk doldurma"],
+  cardTypes: flashcardTypes.map((type) => type.id),
   shortcuts: true,
 };
 export function formatEntryDate(date: string): string {

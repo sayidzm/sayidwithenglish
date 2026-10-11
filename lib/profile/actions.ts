@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
-import { levels, type WorkspaceSettings } from "@/lib/mock-data";
+import { flashcardTypes, levels, type WorkspaceSettings } from "@/lib/mock-data";
 
 export async function saveProfile(input: {
   displayName: string;
@@ -44,6 +44,11 @@ export async function saveProfile(input: {
     value.newLimit > 50
   )
     return { error: "Seviye ve günlük hedef alanlarını kontrol et." };
+  const validCardTypes = new Set<string>(flashcardTypes.map((type) => type.id));
+  if (!Array.isArray(value.cardTypes) || !value.cardTypes.every((type) =>
+    typeof type === "string" && validCardTypes.has(type)) ||
+    new Set(value.cardTypes).size !== value.cardTypes.length)
+    return { error: "Flashcard türlerini kontrol et." };
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -61,6 +66,10 @@ export async function saveProfile(input: {
       .select("user_id")
       .single();
     if (error || !data) return { error: "Profil kaydedilemedi. Tekrar dene." };
+    const preference = await supabase.from("learning_preferences")
+      .upsert({ user_id: user.id, enabled_card_types: value.cardTypes },
+        { onConflict: "user_id" });
+    if (preference.error) return { error: "Kart tercihleri kaydedilemedi. Tekrar dene." };
   } catch {
     return { error: "Profil kaydedilemedi. Bağlantını kontrol et." };
   }

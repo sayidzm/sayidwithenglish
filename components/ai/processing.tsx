@@ -12,10 +12,12 @@ export function AIProcessingPanel({
   stage,
   processing,
   unsupported = false,
+  progress,
 }: {
   stage: number;
   processing: boolean;
   unsupported?: boolean;
+  progress?: { done: number; total: number };
 }) {
   return (
     <ChartCard
@@ -40,7 +42,7 @@ export function AIProcessingPanel({
             : stage >= processingStages.length
               ? "Tamamlandı"
               : processing
-                ? "İşleniyor"
+                ? `İşleniyor ${progress?.done ?? 0}/${progress?.total ?? 0}`
                 : "Önizleme"}
         </Badge>
       }
@@ -90,12 +92,14 @@ export function AIResultCard({ entry }: { entry: Entry }) {
       <div style={{ marginTop: 8 }}>
         <EntryTypeBadge type={entry.type} />
       </div>
-      <p>{entry.meanings.join(" · ")}</p>
-      <p className={s.caption}>{entry.definition}</p>
-      <div className={s.resultExample}>
-        <p lang="en">{entry.examples[0].english}</p>
-        <p className={s.caption}>{entry.examples[0].turkish}</p>
-      </div>
+      <p>{entry.meanings.length ? entry.meanings.join(" · ") : "Anlamı henüz eklenmedi"}</p>
+      <p className={s.caption}>{entry.definition || "Açıklamayı elle tamamlayabilirsin."}</p>
+      {entry.examples[0] && (
+        <div className={s.resultExample}>
+          <p lang="en">{entry.examples[0].english}</p>
+          <p className={s.caption}>{entry.examples[0].turkish}</p>
+        </div>
+      )}
     </article>
   );
 }
