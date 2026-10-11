@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
+import type { Page } from "@playwright/test";
 
 function firstEntry(page: Page) {
   return page.viewportSize()!.width < 640
@@ -136,6 +137,13 @@ test("review reveal, ratings, focus mode and session progress work", async ({
     page.getByRole("progressbar", { name: "Tekrar ilerlemesi" }),
   ).toHaveAttribute("aria-valuenow", "12");
   await page.getByRole("button", { name: /Anlamı göster/ }).click();
+  if (page.viewportSize()!.width < 640) {
+    const repeat = await page.getByRole("button", { name: /^Tekrar 1$/ }).boundingBox();
+    const hard = await page.getByRole("button", { name: /^Zor 2$/ }).boundingBox();
+    const good = await page.getByRole("button", { name: /^İyi 3$/ }).boundingBox();
+    expect(repeat!.x + repeat!.width).toBeLessThanOrEqual(hard!.x);
+    expect(good!.y).toBeGreaterThan(repeat!.y);
+  }
   await expect(
     page.getByRole("article", { name: "Flashcard arka yüz" }),
   ).toContainText("anlamak · çözmek · bir yolunu bulmak");

@@ -9,7 +9,13 @@ import { Topbar } from "./topbar";
 import { BottomNavigation } from "./bottom-navigation";
 import styles from "./shell.module.css";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  displayName,
+}: {
+  children: React.ReactNode;
+  displayName: string;
+}) {
   const [collapsed, setCollapsed] = useState(false);
   const { focusMode } = usePrototype();
   const pathname = usePathname();
@@ -24,11 +30,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           İçeriğe geç
         </a>
         <Sidebar
+          displayName={displayName}
           collapsed={collapsed}
           onToggle={() => setCollapsed((value) => !value)}
         />
         <div className={styles.workspace}>
-          <Topbar />
+          <Topbar displayName={displayName} />
           <main id="main-content" tabIndex={-1} className={styles.main}>
             {children}
           </main>

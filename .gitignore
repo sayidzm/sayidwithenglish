@@ -23,6 +23,7 @@
 
 # next.js
 /.next/
+/.next-auth-e2e/
 /out/
 
 # production
@@ -40,6 +41,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+/qa/auth/
+/qa/auth-test-state.json
+/qa/phase2-capture-manifest.json
+/supabase/.temp/
 
 # vercel
 .vercel

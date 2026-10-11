@@ -22,9 +22,15 @@ type PrototypeState = {
 const PrototypeContext = createContext<PrototypeState | null>(null);
 
 /** In-memory prototype state. A full reload restores the curated examples. */
-export function PrototypeProvider({ children }: { children: ReactNode }) {
+export function PrototypeProvider({
+  children,
+  initialPreferences = initialSettings,
+}: {
+  children: ReactNode;
+  initialPreferences?: WorkspaceSettings;
+}) {
   const [entries, setEntries] = useState(mockEntries);
-  const [settings, saveSettings] = useState(initialSettings);
+  const [settings, saveSettings] = useState(initialPreferences);
   const [reviewed, setReviewed] = useState(12);
   const [focusMode, setFocusMode] = useState(false);
   const addEntries = (added: Entry[]) =>

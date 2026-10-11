@@ -1,32 +1,50 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
+import type { Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
+import { settlePage } from "./support/settle-page";
 
 const routes = [
-  ["dashboard", "Ana Sayfa"], ["add", "Ekle"], ["library", "Kütüphane"], ["learn", "Öğren"],
-  ["review", "Tekrar"], ["tutor", "AI Tutor"], ["statistics", "İstatistikler"], ["settings", "Ayarlar"],
+  ["dashboard", "Ana Sayfa"],
+  ["add", "Ekle"],
+  ["library", "Kütüphane"],
+  ["learn", "Öğren"],
+  ["review", "Tekrar"],
+  ["tutor", "AI Tutor"],
+  ["statistics", "İstatistikler"],
+  ["settings", "Ayarlar"],
 ] as const;
 
 async function capture(page: Page, name: string) {
   const directory = join(process.cwd(), "qa", "screenshots");
   await mkdir(directory, { recursive: true });
-  await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: join(directory, `${name}.png`), fullPage: true, animations: "disabled" });
+  await settlePage(page);
+  await page.screenshot({
+    path: join(directory, `${name}.png`),
+    fullPage: true,
+    animations: "disabled",
+  });
 }
 
 for (const [route, title] of routes) {
-  test(`${route}: page, navigation and responsive layout`, async ({ page }, info) => {
+  test(`${route}: page, navigation and responsive layout`, async ({
+    page,
+  }, info) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     const response = await page.goto(`/${route}`);
     expect(response?.status()).toBe(200);
-    await expect(page.getByRole("heading", { name: title, level: 1, exact: true })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: title, level: 1, exact: true }),
+    ).toBeVisible();
     await expect(page).toHaveTitle(`${title} · sayidwithenglish`);
     await expect(page.locator("html")).toHaveAttribute("lang", "tr");
 
     const width = page.viewportSize()!.width;
     const sidebar = page.getByRole("complementary", { name: "Kenar çubuğu" });
-    const mobileNav = page.getByRole("navigation", { name: "Mobil navigasyon" });
+    const mobileNav = page.getByRole("navigation", {
+      name: "Mobil navigasyon",
+    });
     if (width < 640) {
       await expect(sidebar).toBeHidden();
       await expect(mobileNav).toBeVisible();
@@ -39,8 +57,17 @@ for (const [route, title] of routes) {
     } else {
       await expect(sidebar).toBeVisible();
       await expect(mobileNav).toBeHidden();
-      expect((await sidebar.boundingBox())!.width).toBe(width < 1024 ? 64 : 216);
-      await expect(sidebar.getByRole("navigation").locator('[aria-current="page"]')).toHaveAttribute("href", `/${route}`);
+      expect((await sidebar.boundingBox())!.width).toBe(
+        width < 1024 ? 64 : 216,
+      );
+      if (width < 1024) {
+        await expect(
+          sidebar.getByRole("button", { name: "Kenar çubuğunu daralt" }),
+        ).toBeHidden();
+      }
+      await expect(
+        sidebar.getByRole("navigation").locator('[aria-current="page"]'),
+      ).toHaveAttribute("href", `/${route}`);
     }
     expect((await page.getByRole("banner").boundingBox())!.height).toBe(56);
     const layout = await page.evaluate(() => ({
@@ -60,21 +87,30 @@ for (const [route, title] of routes) {
 test("root redirects and skip link supports the keyboard", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(
+    page.getByRole("heading", { name: "Ana Sayfa", exact: true }),
+  ).toBeVisible();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "İçeriğe geç" })).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
 });
 
-test("command palette filters, closes, restores focus and navigates", async ({ page }, info) => {
+test("command palette filters, closes, restores focus and navigates", async ({
+  page,
+}, info) => {
   await page.goto("/dashboard");
-  const trigger = page.getByRole("button", { name: "Arama ve hızlı erişimi aç" });
+  const trigger = page.getByRole("button", {
+    name: "Arama ve hızlı erişimi aç",
+  });
   await trigger.click();
   const dialog = page.getByRole("dialog", { name: "Hızlı erişim" });
   const input = dialog.getByRole("textbox", { name: "Sayfa ara" });
   await expect(input).toBeFocused();
   await input.fill("eşleşmeyen sayfa");
-  await expect(dialog.getByText("Eşleşen sayfa bulunamadı. Başka bir ad dene.")).toBeVisible();
+  await expect(
+    dialog.getByText("Eşleşen sayfa bulunamadı. Başka bir ad dene."),
+  ).toBeVisible();
   await input.fill("KÜTÜPHANE");
   await expect(dialog.getByRole("link")).toHaveCount(1);
   await capture(page, `${info.project.name}-palette`);
@@ -102,11 +138,15 @@ test("notifications and profile have usable destinations", async ({ page }) => {
   await page.getByRole("button", { name: "Bildirimleri aç" }).click();
   await expect(page.getByText("Henüz bildirimin yok.")).toBeVisible();
   await page.keyboard.press("Escape");
-  await page.getByRole("link", { name: "Profil ve ayarlar", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Profil ve ayarlar", exact: true })
+    .click();
   await expect(page).toHaveURL(/\/settings$/);
 });
 
-test("mobile menu exposes every route and bottom navigation works", async ({ page }, info) => {
+test("mobile menu exposes every route and bottom navigation works", async ({
+  page,
+}, info) => {
   test.skip(page.viewportSize()!.width >= 640, "Mobile navigation only");
   await page.goto("/dashboard");
   await page.getByRole("button", { name: "Tüm sayfaları aç" }).click();
@@ -115,12 +155,21 @@ test("mobile menu exposes every route and bottom navigation works", async ({ pag
   await capture(page, `${info.project.name}-menu`);
   await menu.getByRole("menuitem", { name: "Öğren", exact: true }).click();
   await expect(page).toHaveURL(/\/learn$/);
-  await page.getByRole("navigation", { name: "Mobil navigasyon" }).getByRole("link", { name: "Yeni kayıt ekle" }).click();
+  await page
+    .getByRole("navigation", { name: "Mobil navigasyon" })
+    .getByRole("link", { name: "Yeni kayıt ekle" })
+    .click();
   await expect(page).toHaveURL(/\/add$/);
-  await expect(page.getByRole("navigation", { name: "Mobil navigasyon" }).locator('[aria-current="page"]')).toHaveAttribute("href", "/add");
+  await expect(
+    page
+      .getByRole("navigation", { name: "Mobil navigasyon" })
+      .locator('[aria-current="page"]'),
+  ).toHaveAttribute("href", "/add");
 });
 
-test("desktop sidebar collapse persists across navigation", async ({ page }, info) => {
+test("desktop sidebar collapse persists across navigation", async ({
+  page,
+}, info) => {
   test.skip(page.viewportSize()!.width < 1024, "Desktop collapse only");
   await page.goto("/dashboard");
   const sidebar = page.getByRole("complementary", { name: "Kenar çubuğu" });

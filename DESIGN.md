@@ -192,6 +192,8 @@ Tekrar kartı ortalanır: masaüstünde en fazla 560px genişlik ve en az 330px 
 
 ## Elevation & Depth
 
+Phase 2 auth ekranları aynı Inter, Card, Input ve Button primitive'lerini kullanır. Ortalanmış panel en fazla 400px genişliktedir; 20px başlık, 24px desktop/20px mobile iç padding, ince border ve semantik hata/başarı yüzeyleri korunur. Ayrı bir landing-page veya yeni renk sistemi eklenmemiştir. Ayarlar mevcut panel düzeninde profil alanlarını ve çıkış aksiyonunu içerir; shell profil adını gerçek kayıttan alır.
+
 Derinlik yakın tonlu yüzeyler ve ince border ile kurulur. Kart gölgesi hafif, dropdown/dialog/drawer gölgesi daha geniştir. Tam gölge değerleri sidecar extensions.shadows alanında ve CSS tokenlarında kayıtlıdır. Drawer arkasındaki koyu overlay odağı kayda taşır. Input focus ring'i üç piksellik yumuşak mavi çevredir; global keyboard focus ayrıca görünür outline taşır.
 
 Hareket süresi 150ms ve easing cubic-bezier(.2, .8, .2, 1)'dir. Geçişler hover rengi, border ve switch thumb hareketinde kullanılır. Prefers-reduced-motion geçişleri ve animasyonları kapatır. AI process listesinde tamamlandı/geçerli/bekliyor ayrımı ikon, metin ve tonla yapılır.

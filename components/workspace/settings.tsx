@@ -8,7 +8,10 @@ import {
   Moon,
   Target,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { LogoutButton } from "@/components/auth/logout-button";
+import { saveProfile } from "@/lib/profile/actions";
+import type { Profile } from "@/lib/profile/profile";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,10 +26,14 @@ import {
 } from "@/lib/mock-data";
 import s from "./workspace.module.css";
 
-export function Settings() {
+export function Settings({ profile }: { profile: Profile }) {
   const { settings, saveSettings } = usePrototype();
   const [form, setForm] = useState(settings);
   const [saved, setSaved] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [error, setError] = useState("");
+  const [displayName, setDisplayName] = useState(profile.display_name);
+  const [avatarUrl, setAvatarUrl] = useState(profile.avatar_url || "");
   function change<K extends keyof WorkspaceSettings>(
     key: K,
     value: WorkspaceSettings[K],
@@ -40,9 +47,14 @@ export function Settings() {
         title="Ayarlar"
         description="Öğrenme alışkanlıklarını kendi ritmine göre düzenle."
         actions={
-          <Button type="submit" form="workspace-settings" size="small">
+          <Button
+            type="submit"
+            form="workspace-settings"
+            size="small"
+            disabled={pending}
+          >
             <Check size={14} />
-            Değişiklikleri kaydet
+            {pending ? "Kaydediliyor…" : "Değişiklikleri kaydet"}
           </Button>
         }
       />
@@ -51,11 +63,63 @@ export function Settings() {
         className={`${s.stack} ${s.settings}`}
         onSubmit={(e) => {
           e.preventDefault();
-          saveSettings(form);
-          setSaved(true);
+          setError("");
+          setSaved(false);
+          startTransition(async () => {
+            const result = await saveProfile({
+              displayName,
+              avatarUrl,
+              settings: form,
+            });
+            if (result.error) {
+              setError(result.error);
+              return;
+            }
+            saveSettings(form);
+            setSaved(true);
+          });
         }}
       >
         <div className={`${s.panel} ${s.settingsSections}`}>
+          <section className={s.settingSection}>
+            <div className={s.settingHeading}>
+              <h2>Hesap profili</h2>
+            </div>
+            <div className={s.formGrid}>
+              <label className={s.field}>
+                <span>Adın</span>
+                <Input
+                  value={displayName}
+                  onChange={(e) => {
+                    setDisplayName(e.target.value);
+                    setSaved(false);
+                  }}
+                  required
+                  maxLength={128}
+                  disabled={pending}
+                  autoComplete="name"
+                />
+              </label>
+              <label className={s.field}>
+                <span>Profil fotoğrafı URL</span>
+                <Input
+                  type="url"
+                  value={avatarUrl}
+                  onChange={(e) => {
+                    setAvatarUrl(e.target.value);
+                    setSaved(false);
+                  }}
+                  maxLength={2048}
+                  disabled={pending}
+                  placeholder="https://…"
+                />
+                <small>İsteğe bağlı; fotoğraf yükleme sonraki aşamada.</small>
+              </label>
+            </div>
+            <p className={s.caption}>
+              Ana dil: Türkçe · Öğrenilen dil: İngilizce
+            </p>
+          </section>
           <section className={s.settingSection}>
             <div className={s.settingHeading}>
               <GraduationCap />
@@ -218,10 +282,20 @@ export function Settings() {
         </div>
         <div className={s.settingsFooter}>
           <p role="status" className={s.caption}>
-            {saved ? "Tercihlerin bu çalışma oturumunda kaydedildi." : ""}
+            {saved
+              ? "Profil ve öğrenme hedeflerin kaydedildi. Kart türleri ve kısayollar bu oturumda tutulur."
+              : ""}
           </p>
+          {error && (
+            <p role="alert" className={s.small}>
+              {error}
+            </p>
+          )}
         </div>
       </form>
+      <div className={s.settingsFooter}>
+        <LogoutButton />
+      </div>
     </>
   );
 }

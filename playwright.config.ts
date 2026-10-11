@@ -17,9 +17,9 @@ export default defineConfig({
     { name: "mobile-small", use: { viewport: { width: 320, height: 720 } } },
   ],
   webServer: {
-    command: "npm run start -- --hostname 127.0.0.1 --port 3100",
+    command: "node tests/support/start-server.mjs",
     url: "http://127.0.0.1:3100",
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
+    reuseExistingServer: false,
+    timeout: 120_000,
   },
 });

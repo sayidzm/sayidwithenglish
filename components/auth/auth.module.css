@@ -1,0 +1,105 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-8) var(--space-4);
+}
+.container {
+  width: 100%;
+  max-width: 400px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+  font-weight: 600;
+  font-size: var(--text-body);
+}
+.monogram {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-input);
+  background: var(--primary);
+  color: var(--on-accent);
+  font-size: var(--text-h2);
+}
+.panel {
+  padding: var(--space-6);
+}
+.heading {
+  font-size: var(--text-h2);
+  font-weight: 600;
+  margin: 0 0 var(--space-2);
+}
+.description {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6);
+  line-height: 1.5;
+}
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+.field {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-small);
+}
+.field input {
+  width: 100%;
+}
+.fieldError {
+  color: var(--danger);
+  font-size: var(--text-caption);
+}
+.notice {
+  border: 1px solid var(--border-strong);
+  padding: var(--space-3);
+  border-radius: var(--radius-input);
+  color: var(--text-secondary);
+  font-size: var(--text-small);
+  line-height: 1.5;
+}
+.error {
+  background: var(--danger-soft);
+  color: var(--text-primary);
+}
+.success {
+  background: var(--success-soft);
+  color: var(--text-primary);
+}
+.submit {
+  width: 100%;
+}
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+}
+.links a:hover {
+  color: var(--text-primary);
+}
+.hint {
+  margin-top: var(--space-5);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--text-caption);
+}
+.logout {
+  display: grid;
+  gap: var(--space-2);
+}
+@media (max-width: 639px) {
+  .panel {
+    padding: var(--space-5);
+  }
+}

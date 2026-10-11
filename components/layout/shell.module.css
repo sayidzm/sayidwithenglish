@@ -143,6 +143,11 @@
   color: var(--text-secondary);
   white-space: nowrap;
 }
+.profileCopy > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .collapseButton {
   width: var(--button-small);
   height: var(--button-small);
@@ -333,8 +338,10 @@
   }
   .brandName,
   .navLabel,
-  .profileCopy,
-  .collapseButton {
+  .profileCopy {
+    display: none;
+  }
+  .sidebarFooter .collapseButton {
     display: none;
   }
   .sidebarNav {
